@@ -34,6 +34,9 @@ enable_service() {
     echo -e "\n\n[*] Enbaling Service PHP APM Service...\n"
   fi
 
+  if [ "$service" -ne 0 ]; then
+    enable_service
+
 }
 
 enable_service

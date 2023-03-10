@@ -21,12 +21,16 @@ enable_service() {
     echo -e "\n\n[*] Logging Enbaled.\n"
   elif [ "$service" -eq 1 ]; then
     echo -e "\n\n[*] Enbaling Apache2 Logs...\n"
+    echo -e "\n\n[*] Apache2 Logs are Enabled...\n"
   elif [ "$service" -eq 2 ]; then
     echo -e "\n\n[*] Enbaling Nginx Logs...\n"
+    echo -e "\n\n[*] Nginx Logs are Enabled...\n"
   elif [ "$service" -eq 3 ]; then
     echo -e "\n\n[*] Enbaling Mysql Logs...\n"
+    echo -e "\n\n[*] Mysql Logs are Enabled...\n"
   elif [ "$service" -eq 4 ]; then
     echo -e "\n\n[*] Enbaling SSH Logs...\n"
+    echo -e "\n\n[*] SSH Logs are Enabled...\n"
   else
     echo -e "\n\n[*] Enbaling Security Monitoring...\n"
     echo -e "\n\n[*] Enbaling Service Monitoring Monitoring...\n"

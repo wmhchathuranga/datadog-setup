@@ -1,40 +1,42 @@
 #!/bin/bash
 
-echo -e "\n\n[*] Setting the Datadog Agent...\n"
+echo -e "[*] Setting the Datadog Agent...\n"
 
 read -p "DataDog API Key : " API_KEY
 
 DD_API_KEY="$API_KEY" DD_SITE="us5.datadoghq.com" bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script_agent7.sh)"
 
-echo -e "\n\n[*] Enabling Datadog logs...\n"
+echo -e "\n[*] Enabling Datadog logs...\n"
 
 cp /etc/datadog-agent/datadog.yaml.example /etc/datadog-agent/datadog.yaml
 
 echo "logs_enabled: true" >>/etc/datadog-agent/datadog.yaml
 
+echo -e "\n[*] Log Service Enabled...\n"
+
 enable_service() {
   local service=${1:--1}
   echo -e "\n\n[*] Select the Service to Enable logs...\n"
-  echo -e "\n\n1. Apache2\n2. Nginx\n3. Mysql\n4. SSH\n0. Done\n"
+  echo -e "1. Apache2\n2. Nginx\n3. Mysql\n4. SSH\n0. Done\n"
   read service
   if [ "$service" -eq -1 ]; then
-    echo -e "\n\n[*] Logging Enbaled.\n"
+    echo -e "\n[*] Logging Enbaled.\n"
   elif [ "$service" -eq 1 ]; then
-    echo -e "\n\n[*] Enbaling Apache2 Logs...\n"
-    echo -e "\n\n[*] Apache2 Logs are Enabled...\n"
+    echo -e "\n[*] Enbaling Apache2 Logs...\n"
+    echo -e "\n[*] Apache2 Logs are Enabled...\n"
   elif [ "$service" -eq 2 ]; then
-    echo -e "\n\n[*] Enbaling Nginx Logs...\n"
-    echo -e "\n\n[*] Nginx Logs are Enabled...\n"
+    echo -e "\n[*] Enbaling Nginx Logs...\n"
+    echo -e "\n[*] Nginx Logs are Enabled...\n"
   elif [ "$service" -eq 3 ]; then
-    echo -e "\n\n[*] Enbaling Mysql Logs...\n"
-    echo -e "\n\n[*] Mysql Logs are Enabled...\n"
+    echo -e "\n[*] Enbaling Mysql Logs...\n"
+    echo -e "\n[*] Mysql Logs are Enabled...\n"
   elif [ "$service" -eq 4 ]; then
-    echo -e "\n\n[*] Enbaling SSH Logs...\n"
-    echo -e "\n\n[*] SSH Logs are Enabled...\n"
+    echo -e "\n[*] Enbaling SSH Logs...\n"
+    echo -e "\n[*] SSH Logs are Enabled...\n"
   else
-    echo -e "\n\n[*] Enbaling Security Monitoring...\n"
-    echo -e "\n\n[*] Enbaling Service Monitoring Monitoring...\n"
-    echo -e "\n\n[*] Enbaling Service PHP APM Service...\n"
+    echo -e "\n[*] Enbaling Security Monitoring..."
+    echo -e "\n[*] Enbaling Service Monitoring Monitoring..."
+    echo -e "\n[*] Enbaling Service PHP APM Service..."
   fi
 
   if [ "$service" -ne 0 ]; then
@@ -139,7 +141,8 @@ performance-schema-consumer-events-statements-history-long = on
 performance-schema-consumer-events-statements-history = on
 " >>/etc/mysql/my.cnf
 
-  echo "
+  echo -e "
+\nPlease Execute the following commands in your mysql database to enable the database Performance Tracing\n
 CREATE USER datadog@'%' IDENTIFIED BY 'datadog';
 GRANT REPLICATION CLIENT ON *.* TO datadog@'%' WITH MAX_USER_CONNECTIONS 5;
 GRANT PROCESS ON *.* TO datadog@'%';
@@ -169,8 +172,13 @@ BEGIN
 END $$
 DELIMITER ;
 GRANT EXECUTE ON PROCEDURE datadog.enable_events_statements_consumers TO datadog@'%';
+\n
 "
 
+while [ "$go" -eq "Y" ]
+do 
+  read -p "Can we Proceed [Y/n]? go
+done
   cp /etc/datadog-agent/conf.d/mysql.d/conf.yaml.example /etc/datadog-agent/conf.d/mysql.d/conf.yaml
 
   echo "

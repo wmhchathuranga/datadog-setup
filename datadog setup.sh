@@ -2,8 +2,7 @@
 
 echo -e "\n\n[*] Setting the Datadog Agent...\n"
 
-echo -e "\n\n DataDog API Key : "
-read API_KEY
+read -p "DataDog API Key : " API_KEY
 
 DD_API_KEY="$API_KEY" DD_SITE="us5.datadoghq.com" bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script_agent7.sh)"
 
@@ -36,6 +35,7 @@ enable_service() {
 
   if [ "$service" -ne 0 ]; then
     enable_service
+  fi
 
 }
 

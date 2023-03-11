@@ -2,9 +2,9 @@
 
 echo -e "[*] Setting the Datadog Agent...\n"
 
-read -p "DataDog API Key : " API_KEY
+# read -p "DataDog API Key : " API_KEY
 
-DD_API_KEY="$API_KEY" DD_SITE="us5.datadoghq.com" bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script_agent7.sh)"
+# DD_API_KEY="$API_KEY" DD_SITE="us5.datadoghq.com" bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script_agent7.sh)"
 
 echo -e "\n[*] Enabling Datadog logs...\n"
 
@@ -23,15 +23,19 @@ enable_service() {
     echo -e "\n[*] Logging Enbaled.\n"
   elif [ "$service" -eq 1 ]; then
     echo -e "\n[*] Enbaling Apache2 Logs...\n"
+    apache_logs
     echo -e "\n[*] Apache2 Logs are Enabled...\n"
   elif [ "$service" -eq 2 ]; then
     echo -e "\n[*] Enbaling Nginx Logs...\n"
+    nginx_logs
     echo -e "\n[*] Nginx Logs are Enabled...\n"
   elif [ "$service" -eq 3 ]; then
     echo -e "\n[*] Enbaling Mysql Logs...\n"
+    mysql_logs
     echo -e "\n[*] Mysql Logs are Enabled...\n"
   elif [ "$service" -eq 4 ]; then
     echo -e "\n[*] Enbaling SSH Logs...\n"
+    ssh_logs
     echo -e "\n[*] SSH Logs are Enabled...\n"
   else
     echo -e "\n[*] Enbaling Security Monitoring..."
@@ -74,6 +78,7 @@ logs:
     sourcecategory: http_web_access
     service: myservice" >>/etc/datadog-agent/conf.d/apache.d/conf.yaml
 
+  chmod 777 /var/log/apache2
   chmod +r /var/log/apache2/*.log
   echo "0 01 * * *    root    chmod +r /var/log/apache2/*.log" >>/etc/crontab
 
@@ -175,10 +180,9 @@ GRANT EXECUTE ON PROCEDURE datadog.enable_events_statements_consumers TO datadog
 \n
 "
 
-while [ "$go" -eq "Y" ]
-do 
-  read -p "Can we Proceed [Y/n]? go
-done
+  while [ "$go" -eq "Y" ]; do
+    read -p "Can we Proceed [Y/n]?" go
+  done
   cp /etc/datadog-agent/conf.d/mysql.d/conf.yaml.example /etc/datadog-agent/conf.d/mysql.d/conf.yaml
 
   echo "
@@ -212,7 +216,8 @@ logs:
     # log_processing_rules:
     #   - type: multi_line
     #     name: new_log_start_with_date
-    #     pattern: \d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])" >>/etc/datadog-agent/conf.d/mysql.d/conf.yaml
+    #     pattern: \d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])
+    " >>/etc/datadog-agent/conf.d/mysql.d/conf.yaml
 
   chmod +r /var/log/mysql/*.log
   echo "0 01 * * *    root    chmod +r /var/log/mysql/*.log" >>/etc/crontab
@@ -222,6 +227,30 @@ logs:
   service mysql restart
 
   echo -e "\n\n[*] Mysql Logs Enabled...\n"
+}
+
+# ================ SSH Logs ===================
+
+ssh_logs() {
+  mkdir /etc/datadog-agent/conf.d/ssh.d
+  echo "
+  #Log section
+logs:
+
+    # - type : (mandatory) type of log input source (tcp / udp / file)
+    #   port / path : (mandatory) Set port if type is tcp or udp. Set path if type is file
+    #   service : (mandatory) name of the service owning the log
+    #   source : (mandatory) attribute that defines which integration is sending the log
+    #   sourcecategory : (optional) Multiple value attribute. Can be used to refine the source attribute
+    #   tags: (optional) add tags to each log collected
+
+  - type: file
+    path: /var/log/auth.log
+    service: ssh
+    source: ssh
+" >/etc/datadog-agent/conf.d/ssh.d/conf.yaml
+
+  chmod +r /var/log/auth/log
 }
 
 # =============== Postgrsql Logs ===============

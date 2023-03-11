@@ -14,43 +14,6 @@ echo "logs_enabled: true" >>/etc/datadog-agent/datadog.yaml
 
 echo -e "\n[*] Log Service Enabled...\n"
 
-enable_service() {
-  local service=${1:--1}
-  echo -e "\n\n[*] Select the Service to Enable logs...\n"
-  echo -e "1. Apache2\n2. Nginx\n3. Mysql\n4. SSH\n0. Done\n"
-  read service
-  if [ "$service" -eq -1 ]; then
-    echo -e "\n[*] Logging Enbaled.\n"
-  elif [ "$service" -eq 1 ]; then
-    echo -e "\n[*] Enbaling Apache2 Logs...\n"
-    apache_logs
-    echo -e "\n[*] Apache2 Logs are Enabled...\n"
-  elif [ "$service" -eq 2 ]; then
-    echo -e "\n[*] Enbaling Nginx Logs...\n"
-    nginx_logs
-    echo -e "\n[*] Nginx Logs are Enabled...\n"
-  elif [ "$service" -eq 3 ]; then
-    echo -e "\n[*] Enbaling Mysql Logs...\n"
-    mysql_logs
-    echo -e "\n[*] Mysql Logs are Enabled...\n"
-  elif [ "$service" -eq 4 ]; then
-    echo -e "\n[*] Enbaling SSH Logs...\n"
-    ssh_logs
-    echo -e "\n[*] SSH Logs are Enabled...\n"
-  else
-    echo -e "\n[*] Enbaling Security Monitoring..."
-    echo -e "\n[*] Enbaling Service Monitoring Monitoring..."
-    echo -e "\n[*] Enbaling Service PHP APM Service..."
-  fi
-
-  if [ "$service" -ne 0 ]; then
-    enable_service
-  fi
-
-}
-
-enable_service
-
 # ============== Apache Logs =============
 
 apache_logs() {
@@ -299,3 +262,42 @@ php_apm() {
   php datadog-setup.php --php-bin=all --enable-appsec --enable-profiling
   echo -e "\n\n[*] APM Monitoring Enabled...\n"
 }
+
+# =============== Starting Script ===============
+
+enable_service() {
+  local service=${1:--1}
+  echo -e "\n\n[*] Select the Service to Enable logs...\n"
+  echo -e "1. Apache2\n2. Nginx\n3. Mysql\n4. SSH\n0. Done\n"
+  read service
+  if [ "$service" -eq -1 ]; then
+    echo -e "\n[*] Logging Enbaled.\n"
+  elif [ "$service" -eq 1 ]; then
+    echo -e "\n[*] Enbaling Apache2 Logs...\n"
+    apache_logs
+    echo -e "\n[*] Apache2 Logs are Enabled...\n"
+  elif [ "$service" -eq 2 ]; then
+    echo -e "\n[*] Enbaling Nginx Logs...\n"
+    nginx_logs
+    echo -e "\n[*] Nginx Logs are Enabled...\n"
+  elif [ "$service" -eq 3 ]; then
+    echo -e "\n[*] Enbaling Mysql Logs...\n"
+    mysql_logs
+    echo -e "\n[*] Mysql Logs are Enabled...\n"
+  elif [ "$service" -eq 4 ]; then
+    echo -e "\n[*] Enbaling SSH Logs...\n"
+    ssh_logs
+    echo -e "\n[*] SSH Logs are Enabled...\n"
+  else
+    echo -e "\n[*] Enbaling Security Monitoring..."
+    echo -e "\n[*] Enbaling Service Monitoring Monitoring..."
+    echo -e "\n[*] Enbaling Service PHP APM Service..."
+  fi
+
+  if [ "$service" -ne 0 ]; then
+    enable_service
+  fi
+
+}
+
+enable_service

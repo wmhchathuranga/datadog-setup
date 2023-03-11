@@ -143,7 +143,8 @@ GRANT EXECUTE ON PROCEDURE datadog.enable_events_statements_consumers TO datadog
 \n
 "
 
-  while [ "$go" -eq "Y" ]; do
+  read -p "Can we Proceed [Y/n]?" go
+  while [ "$go" -ne "Y" ]; do
     read -p "Can we Proceed [Y/n]?" go
   done
   cp /etc/datadog-agent/conf.d/mysql.d/conf.yaml.example /etc/datadog-agent/conf.d/mysql.d/conf.yaml

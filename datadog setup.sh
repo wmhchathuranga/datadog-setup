@@ -214,7 +214,7 @@ logs:
     source: ssh
 " >/etc/datadog-agent/conf.d/ssh.d/conf.yaml
 
-  chmod +r /var/log/auth/log
+  chmod +r /var/log/auth.log
 }
 
 # =============== Postgrsql Logs ===============

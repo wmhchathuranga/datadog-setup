@@ -2692,14 +2692,15 @@ process_config:
   ## @param traces - custom object - optional
   ## Traces-specific configuration for OTLP ingest in the Datadog Agent.
   #
-  # traces:
+   
+   traces:
 
     ## @param enabled - boolean - optional - default: true
     ## @env DD_OTLP_CONFIG_TRACES_ENABLED - boolean - optional - default: true
     ## Set to false to disable traces support in the OTLP ingest endpoint.
     ## To enable the OTLP ingest, the otlp_config.receiver section must be set.
     #
-    # enabled: true
+    enabled: true
 
     ## @param span_name_as_resource_name - boolean - optional - default: false
     ## @env DD_OTLP_CONFIG_TRACES_SPAN_NAME_AS_RESOURCE_NAME - boolean - optional - default: false

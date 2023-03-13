@@ -1,0 +1,5 @@
+# Fail2ban filter for blocking IPs that make too many HTTP requests
+[Definition]
+failregex = ^<HOST> -.*"(GET|POST|HEAD).*HTTP.*" \d+ .+$
+datepattern = %%d/%%b/%%Y:%%H:%%M:%%S
+ignoreregex =

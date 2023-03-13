@@ -60,6 +60,25 @@ logs:
 nginx_logs() {
 
   cp /etc/datadog-agent/conf.d/nginx.d/conf.yaml.example /etc/datadog-agent/conf.d/nginx.d/conf.yaml
+
+  echo "
+server {
+    listen 81; # or any other port you prefer
+    server_name localhost; # or your server name
+
+    location /nginx_status {
+        stub_status on;
+        access_log off;
+        allow 127.0.0.1; # or any other IP address you want to allow access from
+        deny all;
+    }
+
+    # any other server block directives
+}
+" >/etc/nginx/sites-available/nginx_status.conf
+
+  ln -s /etc/nginx/sites-available/nginx_status.conf /etc/nginx/sites-enabled/nginx_status.conf
+
   echo "
 logs:
 
@@ -155,7 +174,7 @@ GRANT EXECUTE ON PROCEDURE datadog.enable_events_statements_consumers TO datadog
     read -p "Can we Proceed [Y/n]? " go
   done
   cp /etc/datadog-agent/conf.d/mysql.d/conf.yaml.example /etc/datadog-agent/conf.d/mysql.d/conf.yaml
-  sed -i '42s/.*/password: datadog/' /etc/datadog-agent/conf.d/mysql.d/conf.yaml
+  sed -i '42s/.*/    password: datadog/' /etc/datadog-agent/conf.d/mysql.d/conf.yaml
   echo "
 logs:
 

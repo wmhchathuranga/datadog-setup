@@ -50,7 +50,7 @@ logs:
   chmod +r /var/log/apache2/*.log
   echo "0 01 * * *    root    chmod +r /var/log/apache2/*.log" >>/etc/crontab
 
-  echo -e "[*] Apache Logs Enabled...\n"
+  # echo -e "[*] Apache Logs Enabled...\n"
 }
 
 # ============== Nginx Logs =============
@@ -83,7 +83,7 @@ logs:
   chmod +r /var/log/nginx/*.log
   echo "0 01 * * *    root    chmod +r /var/log/nginx/*.log" >>/etc/crontab
 
-  echo -e "[*] Nginx Logs Enabled...\n"
+  # echo -e "[*] Nginx Logs Enabled...\n"
 }
 
 # =============== MySql Logs ===============
@@ -283,21 +283,40 @@ enable_service() {
   elif [ "$service" -eq 1 ]; then
     echo -e "\n[*] Enbaling Apache2 Logs..."
     sleep 3
-    apache_logs
-    echo -e "[+] Apache2 Logs are Enabled...\n"
-    sleep 1
+    if [ -d "/var/log/apache2" ]; then
+      apache_logs
+      echo -e "[+] Apache2 Logs are Enabled...\n"
+      sleep 1
+    else
+      sleep 1
+      echo "\n[!] Apache Seems to be not Installed in your system\n."
+      sleep 1
+    fi
   elif [ "$service" -eq 2 ]; then
     echo -e "\n[*] Enbaling Nginx Logs..."
     sleep 3
-    nginx_logs
-    echo -e "[+] Nginx Logs are Enabled...\n"
-    sleep 1
+    if [ -d "/var/log/nginx" ]; then
+      nginx_logs
+      echo -e "[+] Nginx Logs are Enabled...\n"
+      sleep 1
+    else
+      sleep 1
+      echo "\n[!] Nginx Seems to be not Installed in your system\n."
+      sleep 1
+    fi
+
   elif [ "$service" -eq 3 ]; then
     echo -e "\n[*] Enbaling Mysql Logs..."
     sleep 3
-    mysql_logs
-    echo -e "[+] Mysql Logs are Enabled...\n"
-    sleep 1
+    if [ -d '/etc/mysql' ]; then
+      mysql_logs
+      echo -e "[+] Mysql Logs are Enabled...\n"
+      sleep 1
+    else
+      sleep 1
+      echo "\n[!] Mysql Seems to be not Installed in your system\n."
+      sleep 1
+    fi
   elif [ "$service" -eq 4 ]; then
     echo -e "\n[*] Enbaling SSH Logs..."
     sleep 3
@@ -319,7 +338,7 @@ enable_service() {
     # sleep 1
     echo -e "\n[*] Restarting Datadog Agent Service..."
     service datadog-agent restart
-    echo -e "\n[+] Datadog Agent Service restarted...\n"
+    echo -e "\n[+] Datadog Agent Service restarted Successfully...\n"
 
   fi
 

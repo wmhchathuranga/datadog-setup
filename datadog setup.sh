@@ -1,11 +1,11 @@
 #!/bin/bash
 
-if [ "$EUID" -ne 0 ]
-  then echo -e "\n[!] Please run this script with sudo privileges\n"
+if [ "$EUID" -ne 0 ]; then
+  echo -e "\n[!] Please run this script with sudo privileges"
   exit
 fi
 
-echo -e "[*] Setting the Datadog Agent...\n"
+echo -e "\n[*] Setting the Datadog Agent..."
 
 # read -p "DataDog API Key : " API_KEY
 
@@ -17,7 +17,7 @@ cp /etc/datadog-agent/datadog.yaml.example /etc/datadog-agent/datadog.yaml
 
 echo "logs_enabled: true" >>/etc/datadog-agent/datadog.yaml
 
-echo -e "\n[*] Log Service Enabled...\n"
+echo -e "\n[*] Log Service Enabled..."
 
 # ============== Apache Logs =============
 
@@ -115,7 +115,7 @@ performance-schema-consumer-events-statements-history = on
 " >>/etc/mysql/my.cnf
 
   echo -e "
-\nPlease Execute the following commands in your mysql database to enable the database Performance Tracing\n
+\n[!] Please Execute the following commands in your mysql database to enable the database Performance Tracing\n
 CREATE USER datadog@'%' IDENTIFIED BY 'datadog';
 GRANT REPLICATION CLIENT ON *.* TO datadog@'%' WITH MAX_USER_CONNECTIONS 5;
 GRANT PROCESS ON *.* TO datadog@'%';
@@ -148,9 +148,9 @@ GRANT EXECUTE ON PROCEDURE datadog.enable_events_statements_consumers TO datadog
 \n
 "
 
-  read -p "Can we Proceed [Y/n]?" go
+  read -p "Can we Proceed [Y/n]? " go
   while [ $go != "Y" ]; do
-    read -p "Can we Proceed [Y/n]?" go
+    read -p "Can we Proceed [Y/n]? " go
   done
   cp /etc/datadog-agent/conf.d/mysql.d/conf.yaml.example /etc/datadog-agent/conf.d/mysql.d/conf.yaml
 
@@ -191,18 +191,20 @@ logs:
   chmod +r /var/log/mysql/*.log
   echo "0 01 * * *    root    chmod +r /var/log/mysql/*.log" >>/etc/crontab
 
-  echo -e "\n\n[*] Restarting mysql server...\n"
+  echo -e "\n\n[*] Restarting mysql server..."
 
   service mysql restart
 
-  echo -e "\n\n[*] Mysql Logs Enabled...\n"
+  echo -e "[+] Mysql service Restarted..."
 }
 
 # ================ SSH Logs ===================
 
 ssh_logs() {
-  mkdir /etc/datadog-agent/conf.d/ssh.d
-  echo "
+  if ! [ -d '/etc/datadog-agent/conf.d/ssh.d' ]; then
+    mkdir /etc/datadog-agent/conf.d/ssh.d
+  fi
+  echo "  
   #Log section
 logs:
 

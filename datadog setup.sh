@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ "$EUID" -ne 0 ]
+  then echo -e "\nPlease run this script with sudo privileges"
+  exit
+fi
+
 echo -e "[*] Setting the Datadog Agent...\n"
 
 # read -p "DataDog API Key : " API_KEY

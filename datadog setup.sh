@@ -254,14 +254,14 @@ compliance_config:
  #
  enabled: true" >>/etc/datadog-agent/security-agent.yaml
 
-  echo -e "\n\n[*] Security Monitoring Enabled...\n"
+  echo -e "\n\n[+] Security Monitoring Enabled...\n"
 }
 
 # ============= Enable APM in PHP ===============
 php_apm() {
   curl -LO https://github.com/DataDog/dd-trace-php/releases/latest/download/datadog-setup.php
   php datadog-setup.php --php-bin=all --enable-appsec --enable-profiling
-  echo -e "\n\n[*] APM Monitoring Enabled...\n"
+  echo -e "\n\n[+] APM Monitoring Enabled...\n"
 }
 
 # =============== Starting Script ===============
@@ -272,27 +272,38 @@ enable_service() {
   echo -e "1. Apache2\n2. Nginx\n3. Mysql\n4. SSH\n0. Done\n"
   read service
   if [ "$service" -eq -1 ]; then
-    echo -e "\n[*] Logging Enbaled.\n"
+    echo -e "\n[+] Logging Service Enbaled.\n"
   elif [ "$service" -eq 1 ]; then
     echo -e "\n[*] Enbaling Apache2 Logs...\n"
+    sleep 3
     apache_logs
-    echo -e "\n[*] Apache2 Logs are Enabled...\n"
+    echo -e "\n[+] Apache2 Logs are Enabled...\n"
   elif [ "$service" -eq 2 ]; then
     echo -e "\n[*] Enbaling Nginx Logs...\n"
+    sleep 3
     nginx_logs
-    echo -e "\n[*] Nginx Logs are Enabled...\n"
+    echo -e "\n[+] Nginx Logs are Enabled...\n"
   elif [ "$service" -eq 3 ]; then
     echo -e "\n[*] Enbaling Mysql Logs...\n"
+    sleep 3
     mysql_logs
-    echo -e "\n[*] Mysql Logs are Enabled...\n"
+    echo -e "\n[+] Mysql Logs are Enabled...\n"
   elif [ "$service" -eq 4 ]; then
     echo -e "\n[*] Enbaling SSH Logs...\n"
+    sleep 3
     ssh_logs
-    echo -e "\n[*] SSH Logs are Enabled...\n"
+    echo -e "\n[+] SSH Logs are Enabled...\n"
   else
     echo -e "\n[*] Enbaling Security Monitoring..."
-    echo -e "\n[*] Enbaling Service Monitoring Monitoring..."
-    echo -e "\n[*] Enbaling Service PHP APM Service..."
+    sleep 3
+    security_monitoring
+    echo -e "\n[*] Enbaling Process Monitoring..."
+    sleep 3
+    process_monitoring
+    echo -e "\n[*] Enbaling PHP APM Service..."
+    sleep 3
+    php_apm
+    echo -e "\n[+] Restarting Datadog Agent Service..."
   fi
 
   if [ "$service" -ne 0 ]; then

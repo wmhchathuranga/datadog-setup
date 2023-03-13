@@ -289,7 +289,7 @@ enable_service() {
       sleep 1
     else
       sleep 1
-      echo "\n[!] Apache Seems to be not Installed in your system\n."
+      echo -e "\n[!] Apache Seems to be not Installed in your system\n."
       sleep 1
     fi
   elif [ "$service" -eq 2 ]; then
@@ -301,7 +301,7 @@ enable_service() {
       sleep 1
     else
       sleep 1
-      echo "\n[!] Nginx Seems to be not Installed in your system\n."
+      echo -e "\n[!] Nginx Seems to be not Installed in your system\n."
       sleep 1
     fi
 
@@ -314,7 +314,7 @@ enable_service() {
       sleep 1
     else
       sleep 1
-      echo "\n[!] Mysql Seems to be not Installed in your system\n."
+      echo -e "\n[!] Mysql Seems to be not Installed in your system\n."
       sleep 1
     fi
   elif [ "$service" -eq 4 ]; then

@@ -13,13 +13,14 @@ DD_API_KEY="$API_KEY" DD_SITE="us5.datadoghq.com" bash -c "$(curl -L https://s3.
 
 echo -e "\n[*] Enabling Datadog logs..."
 
-cp /etc/datadog-agent/datadog.yaml.example /etc/datadog-agent/datadog.yaml
+cp datadog.yaml /etc/datadog-agent/datadog.yaml
 
-echo "logs_enabled: true" >>/etc/datadog-agent/datadog.yaml
+sed -i '11s/.*/api_key: $API_KEY/' /etc/datadog-agent/datadog.yaml
 
 sleep 1
 echo -e "\n[+] Log Service Enabled..."
 sleep 1
+
 # ============== Apache Logs =============
 
 apache_logs() {
@@ -233,34 +234,34 @@ postgres_logs() {
 # =============== Enable Process Monitoring ============
 process_monitoring() {
 
-  echo "
-process_config:
-  process_collection:
-    enabled: true" >>/etc/datadog-agent/datadog.yaml
+  #   echo "
+  # process_config:
+  #   process_collection:
+  #     enabled: true" >>/etc/datadog-agent/datadog.yaml
 
-  echo "
-inventories_configuration_enabled: true" >>/etc/datadog-agent/datadog.yaml
+  #   echo "
+  # inventories_configuration_enabled: true" >>/etc/datadog-agent/datadog.yaml
 
   echo -e "[*] Process Monitoring Enabled...\n"
 }
 
 # ============= Enable Security Monitoring ==============
 security_monitoring() {
-  cp /etc/datadog-agent/security-agent.yaml.example /etc/datadog-agent/security-agent.yaml
-  cp ./system-probe.yaml /etc/datadog-agent/system-probe.yaml
+  cp security-agent.yaml /etc/datadog-agent/security-agent.yaml
+  cp system-probe.yaml /etc/datadog-agent/system-probe.yaml
 
-  echo "
-runtime_security_config:
- ## @param enabled - boolean - optional - default: false
- ## Set to true to enable the Security Runtime Module.
- #
- enabled: true
+  #   echo "
+  # runtime_security_config:
+  #  ## @param enabled - boolean - optional - default: false
+  #  ## Set to true to enable the Security Runtime Module.
+  #  #
+  #  enabled: true
 
-compliance_config:
- ## @param enabled - boolean - optional - default: false
- ## Set to true to enable CIS benchmarks for CSPM.
- #
- enabled: true" >>/etc/datadog-agent/security-agent.yaml
+  # compliance_config:
+  #  ## @param enabled - boolean - optional - default: false
+  #  ## Set to true to enable CIS benchmarks for CSPM.
+  #  #
+  #  enabled: true" >>/etc/datadog-agent/security-agent.yaml
 
   echo -e "[+] Security Monitoring Enabled...\n"
 }

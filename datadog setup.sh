@@ -7,9 +7,9 @@ fi
 
 echo -e "\n[*] Setting the Datadog Agent..."
 
-# read -p "DataDog API Key : " API_KEY
+read -p "DataDog API Key : " API_KEY
 
-# DD_API_KEY="$API_KEY" DD_SITE="us5.datadoghq.com" bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script_agent7.sh)"
+DD_API_KEY="$API_KEY" DD_SITE="us5.datadoghq.com" bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script_agent7.sh)"
 
 echo -e "\n[*] Enabling Datadog logs..."
 
@@ -195,7 +195,7 @@ logs:
 
   service mysql restart
 
-  echo -e "[+] Mysql service Restarted..."
+  echo -e "[+] Mysql service Restarted...\n"
 }
 
 # ================ SSH Logs ===================

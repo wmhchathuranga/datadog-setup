@@ -15,7 +15,7 @@ echo -e "\n[*] Enabling Datadog logs..."
 
 cp datadog.yaml /etc/datadog-agent/datadog.yaml
 
-sed -i '11s/.*/api_key: $API_KEY/' /etc/datadog-agent/datadog.yaml
+sed -i "11s/.*/api_key: $API_KEY/" /etc/datadog-agent/datadog.yaml
 
 sleep 1
 echo -e "\n[+] Log Service Enabled..."

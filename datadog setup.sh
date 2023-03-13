@@ -310,7 +310,10 @@ enable_service() {
     sleep 3
     php_apm
     sleep 1
-    echo -e "\n[+] Restarting Datadog Agent Service..."
+    echo -e "\n[*] Restarting Datadog Agent Service..."
+    service datadog-agent restart
+    echo -e "\n[+] Datadog Agent Service restarted...\n"
+
   fi
 
   if [ "$service" -ne 0 ]; then

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$EUID" -ne 0 ]; then
-  echo -e "\n[!] Please run this script with sudo privileges"
+  echo -e "\n[!] Please run this script with sudo privileges\n"
   exit
 fi
 

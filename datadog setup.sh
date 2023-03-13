@@ -240,7 +240,7 @@ process_config:
   echo "
 inventories_configuration_enabled: true" >>/etc/datadog-agent/datadog.yaml
 
-  echo -e "\n\n[*] Process Monitoring Enabled...\n"
+  echo -e "[*] Process Monitoring Enabled...\n"
 }
 
 # ============= Enable Security Monitoring ==============
@@ -261,14 +261,14 @@ compliance_config:
  #
  enabled: true" >>/etc/datadog-agent/security-agent.yaml
 
-  echo -e "\n\n[+] Security Monitoring Enabled...\n"
+  echo -e "[+] Security Monitoring Enabled...\n"
 }
 
 # ============= Enable APM in PHP ===============
 php_apm() {
   curl -LO https://github.com/DataDog/dd-trace-php/releases/latest/download/datadog-setup.php
   php datadog-setup.php --php-bin=all --enable-appsec --enable-profiling
-  echo -e "\n\n[+] APM Monitoring Enabled...\n"
+  echo -e "[+] APM Monitoring Enabled...\n"
 }
 
 # =============== Starting Script ===============
@@ -313,10 +313,10 @@ enable_service() {
     sleep 3
     process_monitoring
     sleep 1
-    echo -e "\n[*] Enbaling PHP APM Service..."
-    sleep 3
-    php_apm
-    sleep 1
+    # echo -e "\n[*] Enbaling PHP APM Service..."
+    # sleep 3
+    # php_apm
+    # sleep 1
     echo -e "\n[*] Restarting Datadog Agent Service..."
     service datadog-agent restart
     echo -e "\n[+] Datadog Agent Service restarted...\n"

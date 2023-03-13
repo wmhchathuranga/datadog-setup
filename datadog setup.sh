@@ -278,31 +278,38 @@ enable_service() {
     sleep 3
     apache_logs
     echo -e "\n[+] Apache2 Logs are Enabled...\n"
+    sleep 1
   elif [ "$service" -eq 2 ]; then
     echo -e "\n[*] Enbaling Nginx Logs...\n"
     sleep 3
     nginx_logs
     echo -e "\n[+] Nginx Logs are Enabled...\n"
+    sleep 1
   elif [ "$service" -eq 3 ]; then
     echo -e "\n[*] Enbaling Mysql Logs...\n"
     sleep 3
     mysql_logs
     echo -e "\n[+] Mysql Logs are Enabled...\n"
+    sleep 1
   elif [ "$service" -eq 4 ]; then
     echo -e "\n[*] Enbaling SSH Logs...\n"
     sleep 3
     ssh_logs
     echo -e "\n[+] SSH Logs are Enabled...\n"
+    sleep 1
   else
     echo -e "\n[*] Enbaling Security Monitoring..."
     sleep 3
     security_monitoring
+    sleep 1
     echo -e "\n[*] Enbaling Process Monitoring..."
     sleep 3
     process_monitoring
+    sleep 1
     echo -e "\n[*] Enbaling PHP APM Service..."
     sleep 3
     php_apm
+    sleep 1
     echo -e "\n[+] Restarting Datadog Agent Service..."
   fi
 

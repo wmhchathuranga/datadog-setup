@@ -11,13 +11,13 @@ echo -e "\n[*] Setting the Datadog Agent..."
 
 # DD_API_KEY="$API_KEY" DD_SITE="us5.datadoghq.com" bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script_agent7.sh)"
 
-echo -e "\n[*] Enabling Datadog logs...\n"
+echo -e "\n[*] Enabling Datadog logs..."
 
 cp /etc/datadog-agent/datadog.yaml.example /etc/datadog-agent/datadog.yaml
 
 echo "logs_enabled: true" >>/etc/datadog-agent/datadog.yaml
 
-echo -e "\n[*] Log Service Enabled..."
+echo -e "\n[+] Log Service Enabled..."
 
 # ============== Apache Logs =============
 
@@ -50,7 +50,7 @@ logs:
   chmod +r /var/log/apache2/*.log
   echo "0 01 * * *    root    chmod +r /var/log/apache2/*.log" >>/etc/crontab
 
-  echo -e "\n\n[*] Apache Logs Enabled...\n"
+  echo -e "[*] Apache Logs Enabled...\n"
 }
 
 # ============== Nginx Logs =============
@@ -83,7 +83,7 @@ logs:
   chmod +r /var/log/nginx/*.log
   echo "0 01 * * *    root    chmod +r /var/log/nginx/*.log" >>/etc/crontab
 
-  echo -e "\n\n[*] Nginx Logs Enabled...\n"
+  echo -e "[*] Nginx Logs Enabled...\n"
 }
 
 # =============== MySql Logs ===============
@@ -281,28 +281,28 @@ enable_service() {
   if [ "$service" -eq -1 ]; then
     echo -e "\n[+] Logging Service Enbaled.\n"
   elif [ "$service" -eq 1 ]; then
-    echo -e "\n[*] Enbaling Apache2 Logs...\n"
+    echo -e "\n[*] Enbaling Apache2 Logs..."
     sleep 3
     apache_logs
-    echo -e "\n[+] Apache2 Logs are Enabled...\n"
+    echo -e "[+] Apache2 Logs are Enabled...\n"
     sleep 1
   elif [ "$service" -eq 2 ]; then
-    echo -e "\n[*] Enbaling Nginx Logs...\n"
+    echo -e "\n[*] Enbaling Nginx Logs..."
     sleep 3
     nginx_logs
-    echo -e "\n[+] Nginx Logs are Enabled...\n"
+    echo -e "[+] Nginx Logs are Enabled...\n"
     sleep 1
   elif [ "$service" -eq 3 ]; then
-    echo -e "\n[*] Enbaling Mysql Logs...\n"
+    echo -e "\n[*] Enbaling Mysql Logs..."
     sleep 3
     mysql_logs
-    echo -e "\n[+] Mysql Logs are Enabled...\n"
+    echo -e "[+] Mysql Logs are Enabled...\n"
     sleep 1
   elif [ "$service" -eq 4 ]; then
-    echo -e "\n[*] Enbaling SSH Logs...\n"
+    echo -e "\n[*] Enbaling SSH Logs..."
     sleep 3
     ssh_logs
-    echo -e "\n[+] SSH Logs are Enabled...\n"
+    echo -e "[+] SSH Logs are Enabled...\n"
     sleep 1
   else
     echo -e "\n[*] Enbaling Security Monitoring..."
